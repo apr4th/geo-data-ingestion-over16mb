@@ -18,3 +18,5 @@ By segmenting the dataset and distributing it across two interconnected tables, 
 No additional steps are necessary. The GitHub repository contains everything needed for this tutorial.
 
 # Approach for Storing High-Density Coordinates Data Sets
+<img src="https://github.com/apr4th/geo-data-ingestion-over16mb/blob/main/images/shape-files-ingestion.png?raw=true" alt="drawing" style="width:1080px;"/>
+
