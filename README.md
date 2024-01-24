@@ -49,4 +49,5 @@ By segmenting the dataset and distributing it across two interconnected tables, 
 
 <br>
 Mohanraj Palaniswamy - Sr. Solutions Architect
+<br>
 mohanraj.palaniswamy@snowflake.com
