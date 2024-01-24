@@ -24,6 +24,8 @@ By segmenting the dataset and distributing it across two interconnected tables, 
 <img src="https://github.com/apr4th/geo-data-ingestion-over16mb/blob/main/images/shape-files-ingestion-1080x608.png?raw=true" alt="drawing" style="width:1080px;"/>
 
 # Script Files Overview
+The <a href="./scripts">script files</a> listed in the table below will be utilized in this tutorial.
+
 <table border="1" style="border-collapse:collapse" width="100%">
   <tr style="color:#ffffff; background-color:#000000;">
     <td align="left" valign="bottom" width="30%"><b>FILE NAME</b></td>
@@ -50,4 +52,4 @@ By segmenting the dataset and distributing it across two interconnected tables, 
 <br>
 Mohanraj Palaniswamy - Sr. Solutions Architect
 <br>
-mohanraj.palaniswamy@snowflake.com
+Please feel free to reach out me if you have any questions @ <a href = "mailto:mohanraj.palaniswamy@snowflake.com?subject=Feedback on geo-data-ingestion-over16mb Tutorial">mohanraj.palaniswamy@snowflake.com</a>
