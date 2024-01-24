@@ -15,7 +15,10 @@ The article details the step-by-step implementation of this solution, offering a
 By segmenting the dataset and distributing it across two interconnected tables, this solution strikes a balance between efficient data storage and simplified retrieval. The article concludes by emphasizing the impact of this strategic approach on overcoming data type limitations, providing a valuable resource for professionals navigating similar challenges in their data management endeavors.
 
 # Prerequisites
-No additional steps are necessary. The GitHub repository contains everything needed for this tutorial.
+<ol>
+<li>A Snowflake account is required to proceed with this tutorial.</li>
+<li>If you don’t have a sample Shape file, follow the steps in <a href="./shape-files/shape-files-location.pdf">shape-files-location.pdf</a> file and download a sample Shape File.</li>
+</ol>
 
 # Architecture for Ingesting High-Density Coordinates Data Sets
 <img src="https://github.com/apr4th/geo-data-ingestion-over16mb/blob/main/images/shape-files-ingestion-1080x608.png?raw=true" alt="drawing" style="width:1080px;"/>
