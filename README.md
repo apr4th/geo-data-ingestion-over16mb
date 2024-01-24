@@ -52,4 +52,4 @@ The <a href="./scripts">script files</a> listed in the table below will be utili
 <br>
 Mohanraj Palaniswamy - Sr. Solutions Architect
 <br>
-Please feel free to reach out me if you have any questions @ <a href = "mailto:mohanraj.palaniswamy@snowflake.com?subject=Feedback on geo-data-ingestion-over16mb Tutorial">mohanraj.palaniswamy@snowflake.com</a>
+Please feel free to reach out me if you have any questions @ <a href = "mailto:mohanraj.palaniswamy@snowflake.com?subject=Feedback">mohanraj.palaniswamy@snowflake.com</a>
