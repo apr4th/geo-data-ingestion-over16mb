@@ -16,10 +16,37 @@ By segmenting the dataset and distributing it across two interconnected tables, 
 
 # Prerequisites
 <ol>
-<li>A Snowflake account is required to proceed with this tutorial.</li>
-<li>If you don’t have a sample Shape file, follow the steps in <a href="./shape-files/shape-files-location.pdf">shape-files-location.pdf</a> file and download a sample Shape File.</li>
+  <li>A Snowflake account is required to proceed with this tutorial.</li>
+  <li>If you don’t have a sample Shape file, follow the steps in <a href="./shape-files/shape-files-location.pdf">shape-files-location.pdf</a> and download a sample Shape Zip File.</li>
 </ol>
 
 # Architecture for Ingesting High-Density Coordinates Data Sets
 <img src="https://github.com/apr4th/geo-data-ingestion-over16mb/blob/main/images/shape-files-ingestion-1080x608.png?raw=true" alt="drawing" style="width:1080px;"/>
 
+# Script Files Overview
+<table border="1" style="border-collapse:collapse" width="100%">
+  <tr style="color:#ffffff; background-color:#000000;">
+    <td align="left" valign="bottom" width="30%"><b>FILE NAME</b></td>
+    <td align="left" valign="bottom" width="70%"><b>DESCRIPTION</b></td>
+  </tr>
+  <tr>
+    <td align="left" valign="top" width="30%">01-setup-environment.sql</td>
+    <td align="left" valign="top" width="70%">This script file is used to set up the Snowflake environment and create necessary database objects.</td>
+  </tr>
+  <tr>
+    <td align="left" valign="top" width="30%">02-stage-shape-files.sql</td>
+    <td align="left" valign="top" width="70%">This script file is used for staging the sample shape zip file to the internal named stage GEO_STAGE.</td>
+  </tr>
+  <tr>
+    <td align="left" valign="top" width="30%">03-create-procedure.sql</td>
+    <td align="left" valign="top" width="70%">This script file is used for creating the procedure load_shapefile to ingest the geospatial data from the sample shape zip file.</td>
+  </tr>
+  <tr>
+    <td align="left" valign="top" width="30%">04-cleanup-environment.sql</td>
+    <td align="left" valign="top" width="70%">This script file is used for cleaning up the environment after this tutorial is completed.</td>
+  </tr>
+</table>
+
+<br>
+Mohanraj Palaniswamy - Sr. Solutions Architect
+mohanraj.palaniswamy@snowflake.com
