@@ -19,7 +19,11 @@ USE SCHEMA SHAPES;
 
 
 --
--- Create a Procedure to Load the Shape Files
+-- Create a Procedure to Load the Shape Files: load_shapefile
+-- Arguments
+-- [1] - Scoped URL of the Shape Zip File using BUILD_SCOPED_FILE_URL function
+-- [2] - Name of the Shape Zip File
+-- [3] - Table Name where you want to store the GEO Properties
 --
 DROP PROCEDURE IF EXISTS load_shapefile(varchar, varchar, varchar);
 
@@ -48,69 +52,83 @@ def main(sp_session, p_stage_path, p_zipfile_name, p_table_name):
         sp_session.sql(drop_table).collect()
         sp_session.sql(drop_table_co).collect()
 
-        # get the list of filenames from the zip file
+        # get the list of shp filenames from the zip file
         with zipfile.ZipFile(SnowflakeFile.open(p_stage_path, 'rb'), 'r') as zip:
-            file_list = zip.namelist()
-
-        # select the shape files from the file_list
-        shp_file_list = [file for file in file_list if file.endswith('.shp')]
+            shp_file_list = [file for file in zip.namelist() if file.endswith('.shp')]
 
         out = ''
-        total_rowcnt = 0
-        # iterate through the shp_file_list to load
+        total_procnt = 0
+        # iterate through the shp_file_list to ingest each shape file's geometric data into a snowflake table
         for filename in shp_file_list:
             with SnowflakeFile.open(p_stage_path, 'rb') as f:
                 with ZipMemoryFile(f) as zip:
                     with zip.open(filename) as collection:
+                        # initialize dataframes for collecting Geo Properties and Coordiniates
                         progeo_df = pd.DataFrame()
                         progeoco_df = pd.DataFrame()
 
-                        pro_cnt = 0
+                        shp_file_req_seq = 0
                         pro_list = []
+                        # iterate through all the records in the shape file
                         for record in collection:
+                            # get the geometric property
                             geo_str = str(shape(record['geometry']).wkt)
 
+                            # get the geometric coordinates 
                             if (loads(geo_str).geom_type.upper() == "POLYGON"):
                                 co_str = (list(loads(geo_str).exterior.coords))
                             else:
                                 co_str = (list(loads(geo_str).coords))
 
-                            co_cnt = 0
+                            # create a list of coordinates
                             co_list = []
+                            coordinates_seq = 0
                             for co in co_str:
-                               co_dict = {"ZIP_FILE_NAME":p_zipfile_name, "SHP_FILE_NAME":filename, "SHP_FILE_REC_SEQ":pro_cnt, 
-                                          "COORDINATES_SEQ":co_cnt, "LONGITUDE":str(co[0]), "LATITUDE":str(co[1])};
+                               co_dict = {"ZIP_FILE_NAME":p_zipfile_name,
+                                          "SHP_FILE_NAME":filename,
+                                          "SHP_FILE_REC_SEQ":shp_file_req_seq, 
+                                          "COORDINATES_SEQ":coordinates_seq,
+                                          "LONGITUDE":str(co[0]),
+                                          "LATITUDE":str(co[1])};
                                co_list.append(co_dict)
-                               co_cnt=co_cnt+1
+                               coordinates_seq = coordinates_seq + 1
 
-                            temp_dict = str(dict(record['properties'])).replace('None', '\'None\'')
-                            pro_dict = {"ZIP_FILE_NAME":p_zipfile_name, "SHP_FILE_NAME":filename, "SHP_FILE_REC_SEQ":pro_cnt, "PROPERTY":temp_dict};
-                            # pro_dict.update(temp_dict)
-                            pro_dict['GEOMETRY_TYPE'] = loads(geo_str).geom_type.upper()
+                            # create a list of properties
+                            pro_list = [{"ZIP_FILE_NAME":p_zipfile_name,
+                                         "SHP_FILE_NAME":filename,
+                                         "SHP_FILE_REC_SEQ":shp_file_req_seq,
+                                         "PROPERTY":str(dict(record['properties'])).replace('None', '\'None\''),
+                                         "GEOMETRY_TYPE":loads(geo_str).geom_type.upper()}];
 
-                            progeo_df = progeo_df.append([pro_dict])
+                            # add the properties and coordinates to their respective dataframes
+                            progeo_df = progeo_df.append(pro_list)
                             progeoco_df = progeoco_df.append(co_list)
-                            pro_cnt = pro_cnt + 1 
+                            shp_file_req_seq = shp_file_req_seq + 1 
 
-                        total_rowcnt = total_rowcnt + pro_cnt
+                        # add the property count of each shape file to total property count
+                        total_procnt = total_procnt + shp_file_req_seq
+
+                        # write the properties to parent table
                         progeo_tbl_df = sp_session.write_pandas(progeo_df, p_table_name
                                                                          , quote_identifiers = False
                                                                          , auto_create_table = True
                                                                          , overwrite = False
                                                                          , table_type = 'transient')
 
+                        # write the coordinates to child table
                         progeoco_tbl_df = sp_session.write_pandas(progeoco_df, f'{p_table_name}_coordinates'
                                                                              , quote_identifiers = False
                                                                              , auto_create_table = True
                                                                              , overwrite = False
                                                                              , table_type = 'transient')
 
-        out = 'Records inserted: ' + str(total_rowcnt)
+        out = 'Properties inserted: ' + str(total_procnt)
         return out
 
     except Exception as error:
         return (str(error) + " in " + filename);
 $$;
+
 
 
 --
