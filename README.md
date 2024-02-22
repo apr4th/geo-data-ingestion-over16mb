@@ -1,7 +1,7 @@
 # geo-data-ingestion-over16mb
 
 # Overview
-In the realm of data management, handling high-density coordinates within a database can pose significant challenges, especially when dealing with size limitations imposed by data types. This article presents a solution that addresses the constraints associated with the Variant Data Type in Snowflake platform, specifically the 16MB size limitation.
+In the realm of data management, handling high-density coordinates within a database can pose significant challenges, especially when dealing with size limitations imposed by data types. This article presents a solution that addresses the constraints associated with the Geometry/Variant Data Type in Snowflake platform, specifically the 16MB size limitation.
 
 The challenge emerged when attempting to load a set of high-density coordinates, formatted in JSON, into a table in Snowflake. The initial approach, utilizing a Variant column, encountered ingestion failures due to the inherent constraints of the data type. The article delves into the specifics of this limitation, shedding light on the obstacles faced by the customer during the data loading process.
 
